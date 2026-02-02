@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Management</title>
+</head>
+<body>
+    <header>
+        <h1>HR Management</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        <form action="/search" method="GET">
+            <input type="text" name="search" placeholder="Search...">
+            <button type="submit">Search</button>
+        </form>
+    </header>
+
+    <main>
+        <h2>Employee</h2>
+        <button type="button">+ Add</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Position</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Fatima Beatriz</td>
+                    <td>Fatima Beatriz@gmail.com</td>
+                    <td>0985674321</td>
+                    <td>Staff</td>
+                    <td>
+                        <button type="button">Edit</button>
+                        <button type="button">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Gabriel Hanna</td>
+                    <td>Gabriel Hanna@gmail.com</td>
+                    <td>0353674231</td>
+                    <td>Staff</td>
+                    <td>
+                        <button type="button">Edit</button>
+                        <button type="button">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Charles Diya</td>
+                    <td>Charles Diya@gmail.com</td>
+                    <td>0347658833</td>
+                    <td>Staff</td>
+                    <td>
+                        <button type="button">Edit</button>
+                        <button type="button">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>Frank Lamdo</td>
+                    <td>Frank Lamdo@gmail.com</td>
+                    <td>0975444768</td>
+                    <td>Manager</td>
+                    <td>
+                        <button type="button">Edit</button>
+                        <button type="button">Delete</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>Louis Tom</td>
+                    <td>Louis Tom@gmail.com</td>
+                    <td>0789568223</td>
+                    <td>Staff</td>
+                    <td>
+                        <button type="button">Edit</button>
+                        <button type="button">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <section>
+            <h3>New Employee</h3>
+            <form action="/submit" method="POST">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+                <br><br>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <br><br>
+
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone" required>
+                <br><br>
+
+                <label for="position">Position</label>
+                <select id="position" name="position" required>
+                    <option value="">-- Select Position --</option>
+                    <option value="staff">Staff</option>
+                    <option value="manager">Manager</option>
+                    <option value="ceo">CEO</option>
+                </select>
+                <br><br>
+
+                <label>Sex</label><br>
+                <input type="radio" id="male" name="sex" value="male">
+                <label for="male">Male</label>
+                <input type="radio" id="female" name="sex" value="female">
+                <label for="female">Female</label>
+                <br><br>
+
+                <button type="submit">Save</button>
+                <button type="button">Cancel</button>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
