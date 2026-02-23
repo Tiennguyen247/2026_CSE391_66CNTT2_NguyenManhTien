@@ -1,0 +1,223 @@
+/* TODO 1: Dùng universal selector để reset margin và padding về 0 cho toàn trang */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Reset box-sizing cho toàn trang */
+}
+
+/* TODO 2: Dùng type selector cho body */
+/* Yêu cầu: font-family: Arial; background-color: #f5f5f5; */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* TODO 3: Dùng ID selector cho #main-header */
+/* Yêu cầu: background-color: #333; color: white; text-align: center; padding: 20px; */
+#main-header {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+/* TODO 4: Dùng class selector cho .nav-link */
+/* Yêu cầu: color: #333; text-decoration: none; padding: 10px 15px; */
+.nav-link {
+    color: #333;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+/* TODO 5: Dùng group selector cho h1, h2, h3 */
+/* Yêu cầu: font-family: 'Georgia', serif; */
+h1, h2, h3 {
+    font-family:'Times New Roman', Times, serif;
+}
+
+/* TODO 6: Dùng descendant selector cho nav a */
+/* Yêu cầu: display: inline-block; margin: 0 10px; */
+nav a {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+/* TODO 7: Dùng pseudo-class selector cho a:hover */
+/* Yêu cầu: color: #ff6600; background-color: #eee; */
+a:hover {
+    color: #ff6600;
+    background-color: #eee;
+}
+
+/* Style cho .posts container */
+.posts {
+    max-width: 1200px;
+    margin: 40px auto;
+    /* padding: 0 20px; */
+    text-align: center; /* Căn giữa các card inline-block */
+}
+
+/* Style cho .card */
+.card {
+    width: 30%;
+    display: inline-block;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 10px;
+    background: white;
+    border-radius: 8px;
+    /* vertical-align: top;
+    text-align: left; */
+}
+
+/* Style cho .btn */
+.btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    /* margin-top: 10px; */
+}
+
+.btn:hover {
+    background: #0056b3;
+    /* color: white; */
+}
+
+/* Cải tiến nav bằng Flexbox */
+/* nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background: #f8f9fa;
+    padding: 15px;
+} */
+
+/* Cải tiến .posts bằng Flexbox (ghi đè inline-block ở Bài 2) */
+/* .posts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    text-align: left;
+} */
+
+/* Cải tiến .card theo Flexbox */
+/* .card {
+    flex: 0 0 calc(33.33% - 20px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+} */
+
+/* Responsive: Khi màn hình < 768px, card chiếm full width */
+/* @media (max-width: 768px) {
+    .posts {
+        flex-direction: column;
+        padding: 0 15px;
+    }
+
+    .card {
+        flex: 1 1 100%;
+        width: 100%;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+} */
+
+/* Gallery container dùng CSS Grid */
+/* .gallery {
+    display: grid; */
+    /* Dùng auto-fit + minmax để tự động responsive */
+    /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+} */
+
+/* Mỗi ô trong gallery */
+/* .item {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.item:hover {
+    transform: scale(1.03);
+} */
+
+
+/* Header sticky: cố định trên cùng khi cuộn trang */
+/* .sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); Hiệu ứng nổi
+} */
+
+/* Nút Scroll to Top: cố định ở góc dưới bên phải */
+/* .scroll-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-size: 24px;
+    line-height: 1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.scroll-top:hover {
+    background: #0056b3;
+    color: white;
+    transform: scale(1.1);
+}
+
+
+.intro {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
+}
+
+.intro h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+} */
