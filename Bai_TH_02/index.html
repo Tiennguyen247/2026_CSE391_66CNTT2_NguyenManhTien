@@ -4,27 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lab CSS Cơ Bản</title>
-    <!-- TODO: Liên kết file style.css vào đây -->
+    <!-- Bước 1: Liên kết file style.css vào HTML -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header id="main-header">
+
+    <!-- BÀI TẬP 4: Header sticky (cập nhật từ bài 1) -->
+    <header id="main-header" class="sticky-header">
         <h1>My Blog</h1>
     </header>
-    
+
+    <!-- BÀI TẬP 3A: Nav được cải tiến bằng Flexbox -->
     <nav>
         <a href="#" class="nav-link">Home</a>
         <a href="#" class="nav-link">About</a>
         <a href="#" class="nav-link">Contact</a>
     </nav>
-    
+
     <main>
+        <!-- BÀI TẬP 1: Section intro -->
         <section class="intro">
             <h2>Chào mừng đến với Blog</h2>
             <p>Đây là trang blog về lập trình web.</p>
         </section>
 
-    <!-- BÀI TẬP 2 & 3A: 3 card bài viết -->
+        <!-- BÀI TẬP 2 & 3A: 3 card bài viết -->
         <section class="posts">
             <article class="card">
                 <h3>Bài viết 1</h3>
@@ -45,15 +49,15 @@
             </article>
         </section>
 
-    <!-- BÀI TẬP 3B: Gallery dùng CSS Grid -->
-        <!-- <section class="gallery">
+        <!-- BÀI TẬP 3B: Gallery dùng CSS Grid -->
+        <section class="gallery">
             <div class="item">1</div>
             <div class="item">2</div>
             <div class="item">3</div>
             <div class="item">4</div>
             <div class="item">5</div>
             <div class="item">6</div>
-        </section> -->
+        </section>
     </main>
 
     <footer>
@@ -61,7 +65,7 @@
     </footer>
 
     <!-- BÀI TẬP 4: Nút Scroll to Top -->
-    <!-- <a href="#" class="scroll-top">↑</a> -->
+    <a href="#" class="scroll-top">↑</a>
 
 </body>
 </html>
