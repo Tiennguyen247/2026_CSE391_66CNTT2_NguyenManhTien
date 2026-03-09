@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Form Đăng Ký Tài Khoản</title>
+    <style>
+      /* Nền xám nhạt, căn giữa */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        padding: 30px;
+      }
+
+      /* White form */
+      main {
+        background-color: white;
+        padding: 30px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        width: 420px;
+      }
+
+      /* h1 */
+      h1 {
+        text-align: center;
+        color: #333;
+        font-size: 22px;
+      }
+
+      /* label + input */
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #444;
+      }
+
+      /* Input */
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      input[type="tel"] {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 14px;
+      }
+
+      /* error border */
+      input.is-error {
+        border-color: red;
+      }
+
+      /* alert red */
+      .error-message {
+        color: red;
+        font-size: 12px;
+        margin-top: 4px;
+        min-height: 16px;
+      }
+
+      /* Register button */
+      button[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      /* Nút hover */
+      button[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      /* Hộp thông báo thành công */
+      #success-box {
+        display: none;
+        text-align: center;
+        padding: 20px 10px;
+      }
+
+      #success-box h2 {
+        color: green;
+        font-size: 26px;
+      }
+
+      #success-box p {
+        font-size: 16px;
+        color: #444;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <!-- Tiêu đề -->
+      <header>
+        <h1>📝 Form Đăng Ký Tài Khoản</h1>
+      </header>
+
+      <!-- Form đăng ký -->
+      <section id="form-section">
+        <form id="registerForm" novalidate>
+          <!-- Name -->
+          <div class="form-group">
+            <label for="fullname">Họ và tên</label>
+            <input type="text" id="fullname" placeholder="Nguyễn Văn A" />
+            <div class="error-message" id="error-fullname"></div>
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="example@gmail.com" />
+            <div class="error-message" id="error-email"></div>
+          </div>
+
+          <!-- SĐT -->
+          <div class="form-group">
+            <label for="phone">SĐT</label>
+            <input type="tel" id="phone" placeholder="0912345678" />
+            <div class="error-message" id="error-phone"></div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Ít nhất 8 ký tự"
+            />
+            <div class="error-message" id="error-password"></div>
+          </div>
+
+          <!-- Re-password -->
+          <div class="form-group">
+            <label for="confirmPassword">Re-password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              placeholder="Nhập lại mật khẩu"
+            />
+            <div class="error-message" id="error-confirmPassword"></div>
+          </div>
+
+          <!-- Gender -->
+          <div class="form-group">
+            <label>Gender</label>
+            <label style="font-weight: normal"
+              ><input type="radio" name="gender" value="Nam" /> Male</label
+            >
+            <label style="font-weight: normal"
+              ><input type="radio" name="gender" value="Nữ" /> Female</label
+            >
+            <label style="font-weight: normal"
+              ><input type="radio" name="gender" value="Khác" /> Other</label
+            >
+            <div class="error-message" id="error-gender"></div>
+          </div>
+
+          <!-- Trường điều khoản (checkbox) -->
+          <div class="form-group">
+            <label style="font-weight: normal">
+              <input type="checkbox" id="terms" />
+              I agree to the <u>Terms of Service</u>
+            </label>
+            <div class="error-message" id="error-terms"></div>
+          </div>
+
+          <!-- Register button -->
+          <button type="submit">Register</button>
+        </form>
+      </section>
+
+      <section id="success-box">
+        <h2>Registration successful! 🎉</h2>
+        <p>Hello, <strong id="success-name"></strong>!</p>
+        <p>Your account has been created successfully.</p>
+      </section>
+    </main>
+
+    <script>
+      // --- HÀM TIỆN ÍCH ---
+
+      // Hiện thông báo lỗi và đổi viền đỏ cho ô input
+      function showError(fieldId, message) {
+        var errorBox = document.getElementById("error-" + fieldId);
+        var inputBox = document.getElementById(fieldId);
+        errorBox.textContent = message;
+        if (inputBox) inputBox.classList.add("is-error");
+      }
+
+      // Xóa thông báo lỗi và bỏ viền đỏ
+      function clearError(fieldId) {
+        var errorBox = document.getElementById("error-" + fieldId);
+        var inputBox = document.getElementById(fieldId);
+        errorBox.textContent = "";
+        if (inputBox) inputBox.classList.remove("is-error");
+      }
+
+      // Validate họ tên: không trống, >= 3 ký tự, chỉ chữ cái và khoảng trắng
+      function validateFullname() {
+        var value = document.getElementById("fullname").value.trim();
+        if (value === "") {
+          showError("fullname", "Vui lòng nhập họ và tên.");
+          return false;
+        }
+        if (value.length < 3) {
+          showError("fullname", "Họ và tên phải có ít nhất 3 ký tự.");
+          return false;
+        }
+        if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(value)) {
+          showError(
+            "fullname",
+            "Họ và tên chỉ được chứa chữ cái và khoảng trắng.",
+          );
+          return false;
+        }
+        clearError("fullname");
+        return true;
+      }
+
+      // Validate email: không trống, đúng định dạng name@domain.com
+      function validateEmail() {
+        var value = document.getElementById("email").value.trim();
+        if (value === "") {
+          showError("email", "Vui lòng nhập email.");
+          return false;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          showError(
+            "email",
+            "Email không đúng định dạng (vd: name@domain.com).",
+          );
+          return false;
+        }
+        clearError("email");
+        return true;
+      }
+
+      // Validate SĐT: không trống, đúng 10 chữ số, bắt đầu bằng 0
+      function validatePhone() {
+        var value = document.getElementById("phone").value.trim();
+        if (value === "") {
+          showError("phone", "Vui lòng nhập số điện thoại.");
+          return false;
+        }
+        if (!/^0\d{9}$/.test(value)) {
+          showError(
+            "phone",
+            "Số điện thoại phải có 10 chữ số và bắt đầu bằng 0.",
+          );
+          return false;
+        }
+        clearError("phone");
+        return true;
+      }
+
+      // Validate password: không trống, >= 8 ký tự, có chữ hoa, chữ thường, chữ số
+      function validatePassword() {
+        var value = document.getElementById("password").value;
+        if (value === "") {
+          showError("password", "Vui lòng nhập mật khẩu.");
+          return false;
+        }
+        if (value.length < 8) {
+          showError("password", "Mật khẩu phải có ít nhất 8 ký tự.");
+          return false;
+        }
+        if (!/[A-Z]/.test(value)) {
+          showError("password", "Mật khẩu phải có ít nhất 1 chữ hoa (A-Z).");
+          return false;
+        }
+        if (!/[a-z]/.test(value)) {
+          showError("password", "Mật khẩu phải có ít nhất 1 chữ thường (a-z).");
+          return false;
+        }
+        if (!/[0-9]/.test(value)) {
+          showError("password", "Mật khẩu phải có ít nhất 1 chữ số (0-9).");
+          return false;
+        }
+        clearError("password");
+        return true;
+      }
+
+      // Validate Re-password: phải khớp với mật khẩu
+      function validateConfirmPassword() {
+        var pass = document.getElementById("password").value;
+        var confirm = document.getElementById("confirmPassword").value;
+        if (confirm === "") {
+          showError("confirmPassword", "Vui lòng nhập lại mật khẩu.");
+          return false;
+        }
+        if (confirm !== pass) {
+          showError("confirmPassword", "Mật khẩu xác nhận không khớp.");
+          return false;
+        }
+        clearError("confirmPassword");
+        return true;
+      }
+
+      // Validate Gender: bắt buộc chọn 1 radio button
+      function validateGender() {
+        var radios = document.getElementsByName("gender");
+        for (var i = 0; i < radios.length; i++) {
+          if (radios[i].checked) {
+            clearError("gender");
+            return true;
+          }
+        }
+        showError("gender", "Vui lòng chọn giới tính.");
+        return false;
+      }
+
+      // Validate Terms: bắt buộc tick checkbox
+      function validateTerms() {
+        var checked = document.getElementById("terms").checked;
+        if (!checked) {
+          showError("terms", "Bạn phải đồng ý với điều khoản sử dụng.");
+          return false;
+        }
+        clearError("terms");
+        return true;
+      }
+
+      // --- BLUR (validate khi rời khỏi ô) ---
+
+      document
+        .getElementById("fullname")
+        .addEventListener("blur", validateFullname);
+      document.getElementById("email").addEventListener("blur", validateEmail);
+      document.getElementById("phone").addEventListener("blur", validatePhone);
+      document
+        .getElementById("password")
+        .addEventListener("blur", validatePassword);
+      document
+        .getElementById("confirmPassword")
+        .addEventListener("blur", validateConfirmPassword);
+
+      // --- INPUT (xóa lỗi khi người dùng bắt đầu gõ lại) ---
+
+      document
+        .getElementById("fullname")
+        .addEventListener("input", function () {
+          clearError("fullname");
+        });
+      document.getElementById("email").addEventListener("input", function () {
+        clearError("email");
+      });
+      document.getElementById("phone").addEventListener("input", function () {
+        clearError("phone");
+      });
+      document
+        .getElementById("password")
+        .addEventListener("input", function () {
+          clearError("password");
+        });
+      document
+        .getElementById("confirmPassword")
+        .addEventListener("input", function () {
+          clearError("confirmPassword");
+        });
+      document.getElementById("terms").addEventListener("change", function () {
+        clearError("terms");
+      });
+
+      // --- SUBMIT FORM ---
+
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", function (event) {
+          // Ngăn form gửi dữ liệu lên server (reload trang)
+          event.preventDefault();
+
+          // Gọi tất cả hàm validate - dùng & (một dấu) để tất cả đều chạy, không dừng sớm
+          var isValid =
+            validateFullname() &
+            validateEmail() &
+            validatePhone() &
+            validatePassword() &
+            validateConfirmPassword() &
+            validateGender() &
+            validateTerms();
+
+          // Nếu tất cả hợp lệ thì hiện thông báo thành công
+          if (isValid) {
+            var name = document.getElementById("fullname").value.trim();
+
+            // Ẩn form
+            document.getElementById("form-section").style.display = "none";
+
+            // Hiện hộp thành công và điền tên vào
+            document.getElementById("success-name").textContent = name;
+            document.getElementById("success-box").style.display = "block";
+          }
+        });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bảng Điểm Sinh Viên</title>
+    <style>
+      body {
+        font-family: Arial;
+        padding: 20px;
+      }
+
+      /* Mỗi dòng cách nhau */
+      #input-section,
+      #filter-section {
+        margin-bottom: 12px;
+      }
+
+      /* Ô chữ và ô số */
+      input {
+        padding: 5px;
+        font-size: 15px;
+        margin-right: 8px;
+      }
+
+      /* Ô chọn xếp loại */
+      select {
+        padding: 5px;
+        font-size: 15px;
+      }
+
+      /* Nút bấm */
+      button {
+        padding: 5px 14px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+
+      /* Bảng */
+      table {
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+
+      /* Ô trong bảng */
+      th,
+      td {
+        border: 1px solid black;
+        padding: 8px 12px;
+      }
+
+      /* Tiêu đề bảng nền xám */
+      th {
+        background-color: lightgray;
+      }
+
+      /* Tiêu đề cột Điểm bấm được */
+      #thScore {
+        cursor: pointer;
+      }
+
+      /* Hàng điểm yếu nền vàng */
+      tr.weak {
+        background-color: yellow;
+      }
+
+      /* Nút xóa chữ đỏ */
+      .btn-del {
+        color: red;
+        cursor: pointer;
+      }
+
+      /* Dòng thống kê */
+      #stats {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header><h1>Bảng Điểm Sinh Viên</h1></header>
+
+    <main>
+      <!-- Nhập liệu -->
+      <section id="input-section">
+        <label>Họ tên: <input id="iName" placeholder="Nguyễn Văn A" /></label>
+        <label
+          >Điểm:
+          <input
+            id="iScore"
+            type="number"
+            min="0"
+            max="10"
+            step="0.1"
+            placeholder="8.5"
+        /></label>
+        <button id="btnAdd">Thêm</button>
+      </section>
+
+      <!-- Tìm kiếm và lọc -->
+      <section id="filter-section">
+        <label
+          >Tìm kiếm: <input id="iSearch" placeholder="Nhập tên sinh viên..."
+        /></label>
+        <label
+          >Lọc xếp loại:
+          <select id="sFilter">
+            <option value="">Tất cả</option>
+            <option value="Giỏi">Giỏi</option>
+            <option value="Khá">Khá</option>
+            <option value="Trung bình">Trung bình</option>
+            <option value="Yếu">Yếu</option>
+          </select>
+        </label>
+      </section>
+
+      <table>
+        <thead>
+          <tr>
+            <th>STT</th>
+            <th>Họ Tên</th>
+            <!-- Sắp xếp, hiện chiều hiện tại -->
+            <th id="thScore" class="sortable">
+              Điểm <span id="sortArrow"></span>
+            </th>
+            <th>Xếp Loại</th>
+            <th>Thao Tác</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+
+      <div id="stats">
+        Tổng: <b id="sTotal">0</b> &nbsp;|&nbsp; Trung bình: <b id="sAvg"></b>
+      </div>
+    </main>
+
+    <script>
+      let students = []; // mảng gốc, không bao giờ bị lọc
+      let sortDir = 0; // 0=chưa sắp xếp, 1=tăng, -1=giảm
+
+      // trả về xếp loại theo điểm
+      function grade(s) {
+        return s >= 8.5
+          ? "Giỏi"
+          : s >= 7
+            ? "Khá"
+            : s >= 5
+              ? "Trung bình"
+              : "Yếu";
+      }
+
+      // tìm kiếm + lọc + sắp xếp
+      function applyFilters() {
+        const keyword = document
+          .getElementById("iSearch")
+          .value.trim()
+          .toLowerCase();
+        const filter = document.getElementById("sFilter").value;
+
+        // lọc từ mảng gốc
+        let list = students.filter(
+          (sv) =>
+            sv.name.toLowerCase().includes(keyword) && // tìm kiếm tên (không phân biệt hoa thường)
+            (filter === "" || grade(sv.score) === filter), // lọc xếp loại
+        );
+
+        // sắp xếp theo điểm
+        if (sortDir !== 0) list.sort((a, b) => sortDir * (a.score - b.score));
+
+        renderTable(list);
+      }
+
+      // vẽ bảng từ mảng filteredStudents truyền vào
+      function renderTable(list) {
+        const tbody = document.getElementById("tbody");
+
+        if (list.length === 0) {
+          // phân biệt "" và "lọc không có kết quả"
+          const msg = students.length === 0 ? "" : "Không có kết quả.";
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:#999">${msg}</td></tr>`;
+        } else {
+          tbody.innerHTML = list
+            .map(
+              (sv, i) => `
+        <tr class="${sv.score < 5 ? "weak" : ""}">
+          <td>${i + 1}</td><td>${sv.name}</td>
+          <td>${sv.score.toFixed(1)}</td><td>${grade(sv.score)}</td>
+          <td><button class="btn-del" data-i="${students.indexOf(sv)}">Xóa</button></td>
+        </tr>`,
+            )
+            .join("");
+        }
+
+        // thống kê tính trên mảng gốc (không bị ảnh hưởng bởi bộ lọc)
+        document.getElementById("sTotal").textContent = students.length;
+        document.getElementById("sAvg").textContent = students.length
+          ? (
+              students.reduce((s, sv) => s + sv.score, 0) / students.length
+            ).toFixed(2)
+          : "";
+      }
+
+      // validate và thêm sinh viên mới
+      function addStudent() {
+        const name = document.getElementById("iName").value.trim();
+        const score = parseFloat(document.getElementById("iScore").value);
+        if (!name) return alert("Vui lòng nhập họ tên!");
+        if (isNaN(score) || score < 0 || score > 10)
+          return alert("Điểm phải từ 0 đến 10!");
+        students.push({ name, score });
+        document.getElementById("iName").value = document.getElementById(
+          "iScore",
+        ).value = "";
+        document.getElementById("iName").focus();
+        applyFilters();
+      }
+
+      // --- Gắn sự kiện ---
+      document.getElementById("btnAdd").addEventListener("click", addStudent);
+
+      // Enter ở ô điểm để thêm
+      document
+        .getElementById("iScore")
+        .addEventListener("keydown", (e) => e.key === "Enter" && addStudent());
+
+      // tìm kiếm realtime khi gõ
+      document
+        .getElementById("iSearch")
+        .addEventListener("input", applyFilters);
+
+      // lọc xếp loại khi đổi dropdown
+      document
+        .getElementById("sFilter")
+        .addEventListener("change", applyFilters);
+
+      // click tiêu đề Điểm để đổi chiều sắp xếp
+      document.getElementById("thScore").addEventListener("click", () => {
+        sortDir = sortDir === 1 ? -1 : 1; // toggle tăng/giảm
+        document.getElementById("sortArrow").textContent =
+          sortDir === 1 ? "▲" : "▼";
+        applyFilters();
+      });
+
+      // Event Delegation: xử lý xóa — dùng index gốc lưu trong data-i
+      document.getElementById("tbody").addEventListener("click", (e) => {
+        const btn = e.target.closest(".btn-del");
+        if (btn) {
+          students.splice(+btn.dataset.i, 1);
+          applyFilters();
+        }
+      });
+
+      applyFilters(); // khởi tạo bảng lúc tải trang
+    </script>
+  </body>
+</html>
